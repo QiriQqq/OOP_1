@@ -10,13 +10,24 @@ class Programm
         var contract1 = new Contract(new DateTime(2023, 3, 1), "Полная", 500);
         var e1 = new Employee("Иванов Иван Иванович", "Инженер", 60000, 40, contract1);
         var e2 = new Employee("Петров Пётр Петрович", "Аналитик", 55000, 35, contract1);
+        var e3 = new Employee("Сидоров Сидор Сидорович", "Менеджер", 50000, 30, contract1);
+        var e4 = new Employee("Кузнецов Кузьма Кузьмич", "Тестировщик", 45000, 25, contract1);
 
         var dept = new Department(10);
         dept.Hire(e1);
         dept.Hire(e2);
+        dept.Hire(e3);
+        dept.Hire(e4);
 
 
-        Console.WriteLine("\u001b[33m" + "1. Демонстрация работы методов класса Department \u001b[0m");
+        Console.WriteLine("\u001b[33m" + "0. Данные сотрудников \u001b[0m");
+        Console.WriteLine(e1);
+        Console.WriteLine(e2);
+        Console.WriteLine(e3);
+        Console.WriteLine(e4);
+
+
+        Console.WriteLine("\n\u001b[33m" + "1. Демонстрация работы методов класса Department \u001b[0m");
         Console.WriteLine($"Фонд ЗП: {dept.TotalPayroll()}");
         Console.WriteLine($"Средний оклад: {dept.AverageSalary()}");
         Console.WriteLine($"Самый загруженный: {dept.MostLoaded()}");

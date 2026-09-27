@@ -27,7 +27,7 @@
         {
             if (employees[i].Id == id)
             {
-                for (int j = 1; j < count - 1; j++)
+                for (int j = i; j < count - 1; j++)
                     employees[j] = employees[j + 1];
                 count--;
                 return true;
