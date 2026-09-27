@@ -1,12 +1,8 @@
-﻿using System.Diagnostics.Contracts;
-using System.Reflection;
-using System.Security.AccessControl;
-using System.Security.Permissions;
-
-class Programm
+﻿class Program
 {
     static void Main()
     {
+        // -СОЗДАНИЕ СОТРУДНИКОВ И ДЕПАРТАМЕНТА-
         var contract1 = new Contract(new DateTime(2023, 3, 1), "Полная", 500);
         var e1 = new Employee("Иванов Иван Иванович", "Инженер", 60000, 40, contract1);
         var e2 = new Employee("Петров Пётр Петрович", "Аналитик", 55000, 35, contract1);
@@ -19,12 +15,9 @@ class Programm
         dept.Hire(e3);
         dept.Hire(e4);
 
-
+        // -ТЕСТЫ
         Console.WriteLine("\u001b[33m" + "0. Данные сотрудников \u001b[0m");
-        Console.WriteLine(e1);
-        Console.WriteLine(e2);
-        Console.WriteLine(e3);
-        Console.WriteLine(e4);
+        WriteEmployees(dept.GetEmployeesSnapshot());
 
 
         Console.WriteLine("\n\u001b[33m" + "1. Демонстрация работы методов класса Department \u001b[0m");
@@ -46,9 +39,12 @@ class Programm
         TryAndReport(() => new Employee("Пивченко Я.З.", "Стажёр", 30000, 80, contract1),
             "80 часов в неделю");
 
+
         Console.WriteLine("\n\u001b[33m" + "4. Попытка уволить несуществующего работника \u001b[0m");
         bool fired = dept.Fire(999);
-        Console.WriteLine($"Увольнение несуществующего id: успех = {fired}");
+        Console.WriteLine($"Увольнение несуществующего id: успех = {fired}" +
+            $"\nОставшиеся сотрудники:");
+        WriteEmployees(dept.GetEmployeesSnapshot());
 
 
         Console.WriteLine("\n\u001b[33m" + "5. Демонстрация неизменяемости контракта\u001b[0m");
@@ -57,9 +53,15 @@ class Programm
         Console.WriteLine($"Исходный контракт сотрудника: {e1.GetContract()}");
         Console.WriteLine($"Новый объект: {modified}");
 
-        Console.WriteLine("\n\u001b[33m" + "6. Количество созданных сотрудников\u001b[0m");
-        // Вызов через название класса, чтобы показать, что счётчик общий
+
+        Console.WriteLine("\n\u001b[33m" + "6. Демонстрация увольнения сотрудника\u001b[0m");
+        // вызов через название класса, чтобы показать, что счётчик общий
         Console.WriteLine($"Всего создано сотрудников: {Employee.GetEmployeesCreated()}");
+
+        dept.Fire(e2.Id);
+        Console.WriteLine($"Увольнение сотрудника c id {e2.Id} - {e2.FullName}");
+        WriteEmployees(dept.GetEmployeesSnapshot());
+
     }
 
     // метод для ловли ошибок при попытке создать новый объект сотрудника 
@@ -75,5 +77,22 @@ class Programm
             Console.WriteLine($"Перехвачено ({description}): {ex.Message}");
         }
     }
+
+    // метод для вывода списка сотрудников
+    static void WriteEmployees(IEnumerable<Employee> employees)
+    {
+        foreach (Employee emp in employees)
+        {
+            Console.WriteLine(emp);
+        }
+    }
     
 }
+
+
+// Поле         | Правило                           | Метод, где проверяется
+// -------------|-----------------------------------|-----------------------
+// fullName     | ФИО не пустое                     | Employee(...)
+// salary       | Salary >= MIN_SALARY              | Employee(...)
+// hoursPerWeek | 1 <= часы <= 60                   | Employee(...)
+// contract     | не null при переоформлении        | RenewContract(...)

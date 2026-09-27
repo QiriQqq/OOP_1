@@ -50,16 +50,11 @@
     {
         // чтобы при вызове ToString для работника программа не упала с NullReferenceException
         if (newContract == null)
-            throw new ArgumentException(nameof(newContract), "Контракт не может быть null");
+            throw new ArgumentNullException(nameof(newContract), "Контракт не может быть null");
         contract = newContract;
     }
 
-    // 
-    public void RaiseSalary(double percent)
-    {
-        RaiseSalary(percent, double.MaxValue);
-    }
-
+    // метод для повышения оклада на заданный процент
     public void RaiseSalary(double percent, double maxAmount)
     {
         // проверки percent и maxAmount на "разумность"
@@ -75,10 +70,16 @@
         salary += increase;
     }
 
+    // перегруженный метод для повышения оклада без ограничения максимальной суммы
+    public void RaiseSalary(double percent)
+    {
+        RaiseSalary(percent, double.MaxValue);
+    }
+
     // переопределённый ToString()
     public override string ToString()
     {
-        return $"[{id}] {fullName}, {position}, оклад {salary:0.00}," +
+        return $"[{id}] {fullName}, {position}, оклад {salary:0.00}, " +
                $"{hoursPerWeek} ч/нед, {contract}";
     }
 

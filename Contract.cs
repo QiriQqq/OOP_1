@@ -11,7 +11,7 @@
     {
         if (string.IsNullOrWhiteSpace(employmentType))
             throw new ArgumentException("Тип занятости не может быть пустым");
-        if (hourlyRate < 0.0)
+        if (hourlyRate <= 0.0)
             throw new ArgumentException("Ставка за час должна быть больше 0");
 
         HireDate = hireDate;

@@ -1,6 +1,5 @@
 ﻿public class Department
 {
-
     // приватные поля
     private Employee[] employees;
     private int count;
