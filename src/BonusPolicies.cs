@@ -3,15 +3,11 @@ public interface IBonusPolicy
     double CalculateBonus(double basePayment);
 }
 
-
-// Политика 1: премии нет
 public class NoBonus : IBonusPolicy
 {
     public double CalculateBonus(double basePayment) => 0;
 }
 
-
-// Политика 2: процент от базовой выплаты/оклада
 public class PercentBonus : IBonusPolicy
 {
     private readonly double percent;
@@ -26,8 +22,6 @@ public class PercentBonus : IBonusPolicy
     public double CalculateBonus(double basePayment) => basePayment * percent / 100.0;
 }
 
-
-// Политика 3: фиксированная сумма за выполненный план
 public class FixedPlanBonus : IBonusPolicy
 {
     private readonly double amount;

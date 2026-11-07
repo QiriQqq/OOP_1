@@ -30,7 +30,6 @@ public class Grade
     public override string ToString() => $"{Name} (ур. {Level})";
 }
 
-
 public class WorkFormat
 {
     public string Name { get; }

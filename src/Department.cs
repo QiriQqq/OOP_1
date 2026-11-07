@@ -2,7 +2,7 @@ public class Department
 {
     private Employee[] employees;
     private int count;
-    
+
     public Department(int capacity)
     {
         employees = new Employee[capacity];
@@ -27,15 +27,13 @@ public class Department
                 for (int j = i; j < count - 1; j++)
                     employees[j] = employees[j + 1];
                 count--;
-                employees[count] = null; 
+                employees[count] = null!;
                 return true;
             }
         }
-
         return false;
     }
 
-    // метод для расформирования отдела и возврата массива сотрудников
     public Employee[] Disband()
     {
         Employee[] released = GetEmployeesSnapshot();
