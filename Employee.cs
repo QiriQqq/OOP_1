@@ -1,4 +1,5 @@
-﻿public class Employee
+﻿// Класс-сущность (Задание 1)
+public class Employee
 {
     // приватные поля (MIN_SALARY - константа, её всё равно не изменить)
     private static int employeesCreated = 0;
@@ -23,6 +24,8 @@
             throw new ArgumentException($"Оклад не может быть ниже, чем {MIN_SALARY}");
         if (hoursPerWeek < 1 || hoursPerWeek > 60)
             throw new ArgumentException("Часов в неделю должно быть от 1 до 60 включительно");
+        if (contract == null)
+            throw new ArgumentNullException(nameof(contract), "Контракт не может быть null");
 
         this.id = nextId++;
         this.fullName = fullName;

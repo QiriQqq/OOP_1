@@ -52,8 +52,9 @@
         return TotalPayroll() / count;
     }
 
-    // поиск самого загруженного сотрудника (если отдел не пуст)
-    public Employee MostLoaded()
+    // поиск самого загруженного сотрудника (может вернуть null, если отдел пуст)
+    // используется модификатор обнуляемого типа (nullable type) Employee?, чтобы указать, что метод может вернуть null
+    public Employee? MostLoaded()
     {
         if (count == 0) return null;
         Employee result = employees[0];

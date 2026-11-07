@@ -1,6 +1,5 @@
 ﻿public class Contract
 {
-
     // автоматическое свойство без сеттера для последующей инициализации в конструкторе
     public DateTime HireDate { get; }
     public string EmploymentType { get; }
