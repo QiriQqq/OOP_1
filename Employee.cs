@@ -1,89 +1,121 @@
-﻿// Класс-сущность (Задание 1)
-public class Employee
+public abstract class Employee
 {
-    // приватные поля (MIN_SALARY - константа, её всё равно не изменить)
     private static int employeesCreated = 0;
-    public const double MIN_SALARY = 20000.0;
     private static int nextId = 1;
-    private readonly int id;
-    private string fullName;
-    private string position;
-    private double salary;
-    private int hoursPerWeek;
-    private Contract contract;
 
-    // employeesCreated только для чтения через expression body
+    private readonly int id;
+    private readonly string fullName;
+    private Position position;      
+    private Grade grade;     
+    private WorkFormat workFormat; 
+    private int hoursPerWeek;
+    private Contract contract;          
+    private IBonusPolicy bonusPolicy;   
+
     public static int GetEmployeesCreated() => employeesCreated;
 
-    // основной конструктор с проверкой трёх основных условий 
-    public Employee(string fullName, string position, double salary, int hoursPerWeek, Contract contract)
+    protected Employee(
+        string fullName, Position position, Grade grade, 
+        WorkFormat workFormat, int hoursPerWeek, DateTime hireDate, 
+        string employmentType, double hourlyRate, IBonusPolicy bonusPolicy,
+        Action? extraValidation = null
+    )
     {
         if (string.IsNullOrWhiteSpace(fullName))
             throw new ArgumentException("ФИО не может быть пустым");
-        if (salary < MIN_SALARY)
-            throw new ArgumentException($"Оклад не может быть ниже, чем {MIN_SALARY}");
-        if (hoursPerWeek < 1 || hoursPerWeek > 60)
-            throw new ArgumentException("Часов в неделю должно быть от 1 до 60 включительно");
-        if (contract == null)
-            throw new ArgumentNullException(nameof(contract), "Контракт не может быть null");
+        CheckHours(hoursPerWeek);
 
-        this.id = nextId++;
+        // проверка на null для ссылочных типов
+        CheckNotNull(position, nameof(position));
+        CheckNotNull(grade, nameof(grade));
+        CheckNotNull(workFormat, nameof(workFormat));
+        CheckNotNull(bonusPolicy, nameof(bonusPolicy));
+
+        extraValidation?.Invoke();
+
+        Contract newContract = new Contract(hireDate, employmentType, hourlyRate);
+
+        id = nextId++;
         this.fullName = fullName;
         this.position = position;
-        this.salary = salary;
+        this.grade = grade;
+        this.workFormat = workFormat;
         this.hoursPerWeek = hoursPerWeek;
-        this.contract = contract;
+        this.contract = newContract;
+        this.bonusPolicy = bonusPolicy;
 
         employeesCreated++;
     }
 
-    // упрощённый конструктор, вызывающий основной 
-    public Employee(string fullName, double salary, Contract contract)
-        : this(fullName, "Без должности", salary, 40, contract) { }
-
-    // важные поля только для чтения 
+    // свойства для доступа к полям
     public int Id => id;
     public string FullName => fullName;
-    public double Salary => salary;
     public int HoursPerWeek => hoursPerWeek;
-    public Contract GetContract() => contract;
+    public Position Position => position;
+    public Grade Grade => grade;
+    public WorkFormat WorkFormat => workFormat;
+    public double HourlyRate => contract.HourlyRate;
 
-    // отдельный метод для переоформления контракта
-    public void RenewContract(Contract newContract)
+
+    // шаблонный метод для расчёта полной оплаты с учётом бонусов
+    public double CalculatePayment()
     {
-        // чтобы при вызове ToString для работника программа не упала с NullReferenceException
-        if (newContract == null)
-            throw new ArgumentNullException(nameof(newContract), "Контракт не может быть null");
-        contract = newContract;
+        double basePayment = CalculateBasePayment();
+        return basePayment + bonusPolicy.CalculateBonus(basePayment);
     }
 
-    // метод для повышения оклада на заданный процент
-    public void RaiseSalary(double percent, double maxAmount)
+    // абстрактные методы, которые должны быть реализованы в наследниках
+    protected abstract double CalculateBasePayment();
+    protected abstract string PaymentKind { get; }
+
+
+    // методы для изменения состояния сотрудника
+    public void SetBonusPolicy(IBonusPolicy newPolicy)
     {
-        // проверки percent и maxAmount на "разумность"
-        if (percent <= 0)
-            throw new ArgumentException("Процент повышения должен быть положительным");
-        if (maxAmount < 0)
-            throw new ArgumentException("Максимальная сумма повышения не может быть отрицательной");
-
-        double increase = salary * percent / 100.0;
-        if (increase > maxAmount)
-            increase = maxAmount;
-
-        salary += increase;
+        CheckNotNull(newPolicy, nameof(newPolicy));
+        bonusPolicy = newPolicy;
     }
 
-    // перегруженный метод для повышения оклада без ограничения максимальной суммы
-    public void RaiseSalary(double percent)
+    public void ChangeGrade(Grade newGrade)
     {
-        RaiseSalary(percent, double.MaxValue);
+        CheckNotNull(newGrade, nameof(newGrade));
+        grade = newGrade;
     }
 
-    // переопределённый ToString()
-    public override string ToString()
+    public void ChangeWorkFormat(WorkFormat newFormat)
     {
-        return $"[{id}] {fullName}, {position}, оклад {salary:0.00}, " +
+        CheckNotNull(newFormat, nameof(newFormat));
+        workFormat = newFormat;
+    }
+
+    public void ChangeHoursPerWeek(int newHours)
+    {
+        CheckHours(newHours);
+        hoursPerWeek = newHours;
+    }
+
+    public void RenewContract(double newHourlyRate)
+    {
+        contract = contract.WithNewRate(newHourlyRate);
+    }
+
+    // переопределённый ToString с защитой от дальнейшего переопределения
+    public sealed override string ToString()    
+    {
+        return $"[{id}] {fullName}, {position}, {grade}, {workFormat}, {PaymentKind}, " +
                $"{hoursPerWeek} ч/нед, {contract}";
     }
 
+    // вспомогательные методы для проверки аргументов
+    private static void CheckHours(int hours)
+    {
+        if (hours < 1 || hours > 60)
+            throw new ArgumentException("Часов в неделю должно быть от 1 до 60 включительно");
+    }
+
+    private static void CheckNotNull(object value, string paramName)
+    {
+        if (value == null)
+            throw new ArgumentNullException(paramName, $"{paramName} не может быть null");
+    }
 }

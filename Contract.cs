@@ -1,11 +1,9 @@
 ﻿public class Contract
 {
-    // автоматическое свойство без сеттера для последующей инициализации в конструкторе
     public DateTime HireDate { get; }
-    public string EmploymentType { get; }
     public double HourlyRate { get; }
+    public string EmploymentType { get; }
 
-    // конструктор с проверкой условий
     public Contract(DateTime hireDate, string employmentType, double hourlyRate)
     {
         if (string.IsNullOrWhiteSpace(employmentType))
@@ -13,12 +11,13 @@
         if (hourlyRate <= 0.0)
             throw new ArgumentException("Ставка за час должна быть больше 0");
 
+        // инициализация свойств
         HireDate = hireDate;
         EmploymentType = employmentType;
         HourlyRate = hourlyRate;
     }
 
-    // создаёт новый контракт, сохраняя все поля, кроме ставки - она новая
+    // метод для создания нового контракта с изменённой ставкой
     public Contract WithNewRate(double newHourlyRate)
     {
         return new Contract(HireDate, EmploymentType, newHourlyRate);

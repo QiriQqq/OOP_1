@@ -1,25 +1,23 @@
-﻿public class Department
+public class Department
 {
-    // приватные поля
     private Employee[] employees;
     private int count;
-
-    // конструктор с массивом и счётчиком
+    
     public Department(int capacity)
     {
         employees = new Employee[capacity];
         count = 0;
     }
 
-    // нанять сотдруника (если нет мест - выкидывает ошибку)
     public void Hire(Employee employee)
     {
+        if (employee == null)
+            throw new ArgumentNullException(nameof(employee), "Сотрудник не может быть null");
         if (count == employees.Length)
             throw new ArgumentException("В отделе нет свободных мест");
         employees[count++] = employee;
     }
 
-    // увольнение сотрудника по id (false если не найден)
     public bool Fire(int id)
     {
         for (int i = 0; i < count; i++)
@@ -29,6 +27,7 @@
                 for (int j = i; j < count - 1; j++)
                     employees[j] = employees[j + 1];
                 count--;
+                employees[count] = null; 
                 return true;
             }
         }
@@ -36,24 +35,29 @@
         return false;
     }
 
-    // общая сумма всех окладов
+    // метод для расформирования отдела и возврата массива сотрудников
+    public Employee[] Disband()
+    {
+        Employee[] released = GetEmployeesSnapshot();
+        Array.Clear(employees, 0, count);
+        count = 0;
+        return released;
+    }
+
     public double TotalPayroll()
     {
         double sum = 0;
         for (int i = 0; i < count; i++)
-            sum += employees[i].Salary;
+            sum += employees[i].CalculatePayment();
         return sum;
     }
 
-    // средний оклад (если отдел пуст - 0)
-    public double AverageSalary()
+    public double AveragePayment()
     {
         if (count == 0) return 0;
         return TotalPayroll() / count;
     }
 
-    // поиск самого загруженного сотрудника (может вернуть null, если отдел пуст)
-    // используется модификатор обнуляемого типа (nullable type) Employee?, чтобы указать, что метод может вернуть null
     public Employee? MostLoaded()
     {
         if (count == 0) return null;
@@ -63,7 +67,6 @@
                 result = employees[i];
         return result;
     }
-
 
     public Employee[] GetEmployeesSnapshot()
     {
