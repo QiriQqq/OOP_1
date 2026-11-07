@@ -3,15 +3,14 @@ public class Contractor : Employee
     private readonly List<double> acts = new List<double>();
 
     public Contractor(
-        string fullName, Position position, Grade grade, 
-        WorkFormat workFormat, int hoursPerWeek, DateTime hireDate, 
-        string employmentType, double hourlyRate,IBonusPolicy bonusPolicy)
-        : base(fullName, position, grade, workFormat, hoursPerWeek, 
+        string fullName, Position position, Grade grade,
+        WorkFormat workFormat, int hoursPerWeek, DateTime hireDate,
+        string employmentType, double hourlyRate, IBonusPolicy bonusPolicy)
+        : base(fullName, position, grade, workFormat, hoursPerWeek,
             hireDate, employmentType, hourlyRate, bonusPolicy)
     {
     }
 
-    // метод для добавления суммы акта
     public void AddAct(double amount)
     {
         if (amount <= 0)
@@ -19,7 +18,6 @@ public class Contractor : Employee
         acts.Add(amount);
     }
 
-    // реализация абстрактных методов из базового класса
     protected override double CalculateBasePayment()
     {
         double sum = 0;

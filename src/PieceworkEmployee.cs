@@ -1,6 +1,3 @@
-// Сотрудник на сдельной оплате: платят за каждую изготовленную единицу продукции.
-// «Является» сотрудником: есть Id, ФИО, контракт, часы, политика премии;
-// отличается только способом расчёта базовой части выплаты.
 public class PieceworkEmployee : Employee
 {
     private readonly double ratePerUnit;
@@ -16,7 +13,6 @@ public class PieceworkEmployee : Employee
         this.unitsProduced = unitsProduced;
     }
 
-    // проверки выполняются до выдачи Id и увеличения счётчика (см. extraValidation в Employee)
     private static void CheckPieceParams(double ratePerUnit, int unitsProduced)
     {
         if (ratePerUnit <= 0)
@@ -25,7 +21,6 @@ public class PieceworkEmployee : Employee
             throw new ArgumentException("Количество единиц не может быть отрицательным");
     }
 
-    // учесть ещё изготовленные единицы
     public void AddUnits(int units)
     {
         if (units <= 0)
@@ -33,9 +28,6 @@ public class PieceworkEmployee : Employee
         unitsProduced += units;
     }
 
-    // базовая выплата = расценка * количество изготовленных единиц
     protected override double CalculateBasePayment() => ratePerUnit * unitsProduced;
-
-    protected override string PaymentKind =>
-        $"сдельная оплата ({unitsProduced} ед. по {ratePerUnit:0.00})";
+    protected override string PaymentKind => $"сдельная оплата ({unitsProduced} ед. по {ratePerUnit:0.00})";
 }
