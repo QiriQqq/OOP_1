@@ -1,3 +1,4 @@
 <Solution>
-  <Project Path="OOP_3.csproj" />
+  <Project Path="src/OOP_3.App.csproj" />
+  <Project Path="tests/OOP_3.Tests.csproj" />
 </Solution>
