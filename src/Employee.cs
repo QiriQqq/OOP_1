@@ -6,11 +6,11 @@ public abstract class Employee
     private readonly int _id;
     private readonly string _fullName;
     private int _hoursPerWeek;
-    private Position position;
-    private Grade grade;
-    private WorkFormat workFormat;
-    private Contract contract;
-    private IBonusPolicy bonusPolicy;
+    private Position _position;
+    private Grade _grade;
+    private WorkFormat _workFormat;
+    private Contract _contract;
+    private IBonusPolicy _bonusPolicy;
 
     public static int GetEmployeesCreated() => _employeesCreated;
 
@@ -32,27 +32,27 @@ public abstract class Employee
         _id = _nextId++;
         _fullName = fullName;
         _hoursPerWeek = hoursPerWeek;
-        this.position = position;
-        this.grade = grade;
-        this.workFormat = workFormat;
-        contract = newContract;
-        this.bonusPolicy = bonusPolicy;
+        _position = position;
+        _grade = grade;
+        _workFormat = workFormat;
+        _contract = newContract;
+        _bonusPolicy = bonusPolicy;
         _employeesCreated++;
     }
 
     public int Id => _id;
     public string FullName => _fullName;
     public int HoursPerWeek => _hoursPerWeek;
-    public Position Position => position;
-    public Grade Grade => grade;
-    public WorkFormat WorkFormat => workFormat;
-    public double HourlyRate => contract.HourlyRate;
-    public DateTime HireDate => contract.HireDate;
+    public Position Position => _position;
+    public Grade Grade => _grade;
+    public WorkFormat WorkFormat => _workFormat;
+    public double HourlyRate => _contract.HourlyRate;
+    public DateTime HireDate => _contract.HireDate;
 
     public double CalculatePayment()
     {
         double basePayment = CalculateBasePayment();
-        return basePayment + bonusPolicy.CalculateBonus(basePayment);
+        return basePayment + _bonusPolicy.CalculateBonus(basePayment);
     }
 
     protected abstract double CalculateBasePayment();
@@ -61,19 +61,19 @@ public abstract class Employee
     public void SetBonusPolicy(IBonusPolicy newPolicy)
     {
         CheckNotNull(newPolicy, nameof(newPolicy));
-        bonusPolicy = newPolicy;
+        _bonusPolicy = newPolicy;
     }
 
     public void ChangeGrade(Grade newGrade)
     {
         CheckNotNull(newGrade, nameof(newGrade));
-        grade = newGrade;
+        _grade = newGrade;
     }
 
     public void ChangeWorkFormat(WorkFormat newFormat)
     {
         CheckNotNull(newFormat, nameof(newFormat));
-        workFormat = newFormat;
+        _workFormat = newFormat;
     }
 
     public void ChangeHoursPerWeek(int newHours)
@@ -84,13 +84,13 @@ public abstract class Employee
 
     public void RenewContract(double newHourlyRate)
     {
-        contract = contract.WithNewRate(newHourlyRate);
+        _contract = _contract.WithNewRate(newHourlyRate);
     }
 
     public sealed override string ToString()
     {
-        return $"[{_id}] {_fullName}, {position}, {grade}, {workFormat}, {PaymentKind}, " +
-               $"{_hoursPerWeek} ч/нед, {contract}";
+        return $"[{_id}] {_fullName}, {_position}, {_grade}, {_workFormat}, {PaymentKind}, " +
+               $"{_hoursPerWeek} ч/нед, {_contract}";
     }
 
     private static void CheckHours(int hours)
