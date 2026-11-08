@@ -12,7 +12,7 @@ $mutations = @(
     @{ Path = "src/Employee.cs"; Before = "hours > 60"; After = "hours > 61"; Name = "hours boundary" },
     @{ Path = "src/SalariedEmployee.cs"; Before = "if (salary < MIN_SALARY)"; After = "if (salary < MIN_SALARY && false)"; Name = "minimum salary" },
     @{ Path = "src/EmployeeWorkflowService.cs"; Before = "employee.CalculatePayment() * years * annualPercent / 100.0"; After = "employee.CalculatePayment() * years * annualPercent * 100.0"; Name = "seniority bonus" },
-    @{ Path = "src/Department.cs"; Before = "return TotalPayroll() / _count;"; After = "return TotalPayroll() / employees.Length;"; Name = "average payment" },
+    @{ Path = "src/Department.cs"; Before = "return TotalPayroll() / _count;"; After = "return TotalPayroll() / _employees.Length;"; Name = "average payment" },
     @{ Path = "src/BonusPolicies.cs"; Before = "basePayment * _percent / 100.0"; After = "0"; Name = "percentage bonus" }
 )
 
