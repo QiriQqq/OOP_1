@@ -1,7 +1,7 @@
 public class PieceworkEmployee : Employee
 {
-    private readonly double ratePerUnit;
-    private int unitsProduced;
+    private readonly double _ratePerUnit;
+    private int _unitsProduced;
 
     public PieceworkEmployee(string fullName, Position position, Grade grade, WorkFormat workFormat,
         int hoursPerWeek, DateTime hireDate, string employmentType, double hourlyRate,
@@ -9,8 +9,8 @@ public class PieceworkEmployee : Employee
         : base(fullName, position, grade, workFormat, hoursPerWeek, hireDate, employmentType,
                hourlyRate, bonusPolicy, () => CheckPieceParams(ratePerUnit, unitsProduced))
     {
-        this.ratePerUnit = ratePerUnit;
-        this.unitsProduced = unitsProduced;
+        _ratePerUnit = ratePerUnit;
+        _unitsProduced = unitsProduced;
     }
 
     private static void CheckPieceParams(double ratePerUnit, int unitsProduced)
@@ -25,9 +25,9 @@ public class PieceworkEmployee : Employee
     {
         if (units <= 0)
             throw new ArgumentException("Количество единиц должно быть больше 0");
-        unitsProduced += units;
+        _unitsProduced += units;
     }
 
-    protected override double CalculateBasePayment() => ratePerUnit * unitsProduced;
-    protected override string PaymentKind => $"сдельная оплата ({unitsProduced} ед. по {ratePerUnit:0.00})";
+    protected override double CalculateBasePayment() => _ratePerUnit * _unitsProduced;
+    protected override string PaymentKind => $"сдельная оплата ({_unitsProduced} ед. по {_ratePerUnit:0.00})";
 }

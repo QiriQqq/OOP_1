@@ -1,7 +1,7 @@
 public class SalariedEmployee : Employee
 {
     public const double MIN_SALARY = 20000.0;
-    private double salary;
+    private double _salary;
 
     public SalariedEmployee(
         string fullName, Position position, Grade grade, WorkFormat workFormat,
@@ -10,10 +10,10 @@ public class SalariedEmployee : Employee
         : base(fullName, position, grade, workFormat, hoursPerWeek, hireDate,
                employmentType, hourlyRate, bonusPolicy, () => CheckSalary(salary))
     {
-        this.salary = salary;
+        _salary = salary;
     }
 
-    public double Salary => salary;
+    public double Salary => _salary;
 
     private static void CheckSalary(double salary)
     {
@@ -27,10 +27,10 @@ public class SalariedEmployee : Employee
             throw new ArgumentException("Процент повышения должен быть положительным");
         if (maxAmount < 0)
             throw new ArgumentException("Максимальная сумма повышения не может быть отрицательной");
-        double increase = salary * percent / 100.0;
+        double increase = _salary * percent / 100.0;
         if (increase > maxAmount)
             increase = maxAmount;
-        salary += increase;
+        _salary += increase;
     }
 
     public void RaiseSalary(double percent)
@@ -38,6 +38,6 @@ public class SalariedEmployee : Employee
         RaiseSalary(percent, double.MaxValue);
     }
 
-    protected override double CalculateBasePayment() => salary;
-    protected override string PaymentKind => $"оклад {salary:0.00}";
+    protected override double CalculateBasePayment() => _salary;
+    protected override string PaymentKind => $"оклад {_salary:0.00}";
 }

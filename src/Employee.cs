@@ -1,18 +1,18 @@
 public abstract class Employee
 {
-    private static int employeesCreated = 0;
-    private static int nextId = 1;
+    private static int _employeesCreated = 0;
+    private static int _nextId = 1;
 
-    private readonly int id;
-    private readonly string fullName;
+    private readonly int _id;
+    private readonly string _fullName;
+    private int _hoursPerWeek;
     private Position position;
     private Grade grade;
     private WorkFormat workFormat;
-    private int hoursPerWeek;
     private Contract contract;
     private IBonusPolicy bonusPolicy;
 
-    public static int GetEmployeesCreated() => employeesCreated;
+    public static int GetEmployeesCreated() => _employeesCreated;
 
     protected Employee(
         string fullName, Position position, Grade grade,
@@ -29,20 +29,20 @@ public abstract class Employee
         CheckNotNull(bonusPolicy, nameof(bonusPolicy));
         extraValidation?.Invoke();
         Contract newContract = new Contract(hireDate, employmentType, hourlyRate);
-        id = nextId++;
-        this.fullName = fullName;
+        _id = _nextId++;
+        _fullName = fullName;
+        _hoursPerWeek = hoursPerWeek;
         this.position = position;
         this.grade = grade;
         this.workFormat = workFormat;
-        this.hoursPerWeek = hoursPerWeek;
-        this.contract = newContract;
+        contract = newContract;
         this.bonusPolicy = bonusPolicy;
-        employeesCreated++;
+        _employeesCreated++;
     }
 
-    public int Id => id;
-    public string FullName => fullName;
-    public int HoursPerWeek => hoursPerWeek;
+    public int Id => _id;
+    public string FullName => _fullName;
+    public int HoursPerWeek => _hoursPerWeek;
     public Position Position => position;
     public Grade Grade => grade;
     public WorkFormat WorkFormat => workFormat;
@@ -79,7 +79,7 @@ public abstract class Employee
     public void ChangeHoursPerWeek(int newHours)
     {
         CheckHours(newHours);
-        hoursPerWeek = newHours;
+        _hoursPerWeek = newHours;
     }
 
     public void RenewContract(double newHourlyRate)
@@ -89,8 +89,8 @@ public abstract class Employee
 
     public sealed override string ToString()
     {
-        return $"[{id}] {fullName}, {position}, {grade}, {workFormat}, {PaymentKind}, " +
-               $"{hoursPerWeek} ч/нед, {contract}";
+        return $"[{_id}] {_fullName}, {position}, {grade}, {workFormat}, {PaymentKind}, " +
+               $"{_hoursPerWeek} ч/нед, {contract}";
     }
 
     private static void CheckHours(int hours)

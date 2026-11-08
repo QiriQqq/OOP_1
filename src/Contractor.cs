@@ -1,6 +1,6 @@
 public class Contractor : Employee
 {
-    private readonly List<double> acts = new List<double>();
+    private readonly List<double> _acts = new List<double>();
 
     public Contractor(
         string fullName, Position position, Grade grade,
@@ -15,16 +15,16 @@ public class Contractor : Employee
     {
         if (amount <= 0)
             throw new ArgumentException("Сумма акта должна быть больше 0");
-        acts.Add(amount);
+        _acts.Add(amount);
     }
 
     protected override double CalculateBasePayment()
     {
         double sum = 0;
-        foreach (double act in acts)
+        foreach (double act in _acts)
             sum += act;
         return sum;
     }
 
-    protected override string PaymentKind => $"оплата по актам ({acts.Count} шт.)";
+    protected override string PaymentKind => $"оплата по актам ({_acts.Count} шт.)";
 }

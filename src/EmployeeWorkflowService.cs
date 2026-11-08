@@ -16,15 +16,15 @@ public interface IEmployeeStorage
 
 public class EmployeeWorkflowService
 {
-    private readonly ITimeProvider timeProvider;
-    private readonly IRandomSource randomSource;
-    private readonly IEmployeeStorage storage;
+    private readonly ITimeProvider _timeProvider;
+    private readonly IRandomSource _randomSource;
+    private readonly IEmployeeStorage _storage;
 
     public EmployeeWorkflowService(ITimeProvider timeProvider, IRandomSource randomSource, IEmployeeStorage storage)
     {
-        this.timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
-        this.randomSource = randomSource ?? throw new ArgumentNullException(nameof(randomSource));
-        this.storage = storage ?? throw new ArgumentNullException(nameof(storage));
+        _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+        _randomSource = randomSource ?? throw new ArgumentNullException(nameof(randomSource));
+        _storage = storage ?? throw new ArgumentNullException(nameof(storage));
     }
 
     public double CalculateSeniorityBonus(Employee employee, double annualPercent)
@@ -34,7 +34,7 @@ public class EmployeeWorkflowService
         if (annualPercent < 0)
             throw new ArgumentOutOfRangeException(nameof(annualPercent));
 
-        DateTime now = timeProvider.Now;
+        DateTime now = _timeProvider.Now;
         int years = now.Year - employee.HireDate.Year;
         if (now.Date < employee.HireDate.AddYears(years).Date)
             years--;
@@ -51,7 +51,7 @@ public class EmployeeWorkflowService
         if (tasks.Count == 0)
             throw new ArgumentException("Список задач пуст", nameof(tasks));
 
-        int index = randomSource.Next(tasks.Count);
+        int index = _randomSource.Next(tasks.Count);
         if (index < 0 || index >= tasks.Count)
             throw new InvalidOperationException("Источник случайности вернул недопустимый индекс");
         return tasks[index];
@@ -61,8 +61,8 @@ public class EmployeeWorkflowService
     {
         if (employee == null)
             throw new ArgumentNullException(nameof(employee));
-        storage.Save(employee);
+        _storage.Save(employee);
     }
 
-    public IReadOnlyList<Employee> GetEmployees() => storage.GetAll();
+    public IReadOnlyList<Employee> GetEmployees() => _storage.GetAll();
 }
