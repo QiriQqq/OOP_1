@@ -12,18 +12,18 @@ dotnet test tests/OOP_3.Tests.csproj
 
 ## Задание 1. Инварианты и расчёт выплат
 
-| Правило | Проверяющий тест |
-|---|---|
-| Часы в неделю от 1 до 60 включительно принимаются | `Hours_at_allowed_limits_are_accepted` |
-| Часы меньше 1 или больше 60 отклоняются | `Hours_outside_allowed_range_are_rejected` |
-| ФИО не может быть null, пустым или состоять из пробелов | `Empty_employee_name_is_rejected` |
-| Непустое ФИО принимается | `Non_empty_employee_name_is_accepted` |
-| Оклад, равный минимальному значению 20000, принимается | `Minimum_salary_is_accepted` |
-| Оклад ниже 20000 отклоняется | `Salary_below_minimum_is_rejected` |
+| Правило                                                       | Проверяющий тест                                           |
+| ------------------------------------------------------------- | ---------------------------------------------------------- |
+| Часы в неделю от 1 до 60 включительно принимаются             | `Hours_at_allowed_limits_are_accepted`                     |
+| Часы меньше 1 или больше 60 отклоняются                       | `Hours_outside_allowed_range_are_rejected`                 |
+| ФИО не может быть null, пустым или состоять из пробелов       | `Empty_employee_name_is_rejected`                          |
+| Непустое ФИО принимается                                      | `Non_empty_employee_name_is_accepted`                      |
+| Оклад, равный минимальному значению 20000, принимается        | `Minimum_salary_is_accepted`                               |
+| Оклад ниже 20000 отклоняется                                  | `Salary_below_minimum_is_rejected`                         |
 | Почасовая выплата рассчитывается как часы × 4 недели × ставка | `Hourly_employee_payment_uses_hours_weeks_and_hourly_rate` |
-| Окладная выплата учитывает процентную премию | `Salaried_employee_payment_includes_percentage_bonus` |
-| Выплата подрядчика равна сумме актов и премии | `Contractor_payment_is_sum_of_acts_and_bonus` |
-| Процентная премия действительно прибавляется к выплате | `Percentage_bonus_is_not_ignored` |
+| Окладная выплата учитывает процентную премию                  | `Salaried_employee_payment_includes_percentage_bonus`      |
+| Выплата подрядчика равна сумме актов и премии                 | `Contractor_payment_is_sum_of_acts_and_bonus`              |
+| Процентная премия действительно прибавляется к выплате        | `Percentage_bonus_is_not_ignored`                          |
 
 ## Задания 3 и 4. Дублёры и NSubstitute
 
