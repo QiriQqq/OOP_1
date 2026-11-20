@@ -5,10 +5,10 @@ public class EmployeeInvariantTests
     [Theory]
     [InlineData(1)]
     [InlineData(60)]
-    public void الساعات_عند_الحدود_المسموحة_مقبولة(int ساعات)
+    public void Hours_at_allowed_limits_are_accepted(int hours)
     {
-        var موظف = TestData.Hourly(ساعات);
-        Assert.Equal(ساعات, موظف.HoursPerWeek);
+        var employee = TestData.Hourly(hours);
+        Assert.Equal(hours, employee.HoursPerWeek);
     }
 
     [Theory]
@@ -65,8 +65,3 @@ public class EmployeeInvariantTests
 
 
 
-//public void Hours_at_allowed_limits_are_accepted(int hours)
-//{
-//    var employee = TestData.Hourly(hours);
-//    Assert.Equal(hours, employee.HoursPerWeek);
-//}
