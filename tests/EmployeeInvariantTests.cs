@@ -53,15 +53,3 @@ public class EmployeeInvariantTests
         Assert.Throws<ArgumentException>(() => TestData.Salaried(salary));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

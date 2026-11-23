@@ -17,4 +17,15 @@ public static class TestData
         return new HourlyEmployee("Петров Пётр Петрович", Position, Grade, WorkFormat,
             hours, HireDate, "Полная", 500, bonus ?? NoBonus);
     }
+
+    public static EmployeeCreationData CreationData(
+        double? salary = null,
+        double? ratePerUnit = null,
+        int? unitsProduced = null,
+        IEnumerable<double>? actAmounts = null)
+    {
+        return new EmployeeCreationData("Тестовый Сотрудник", Position, Grade, WorkFormat,
+            40, HireDate, "Тестовый", 500, NoBonus,
+            salary, ratePerUnit, unitsProduced, actAmounts);
+    }
 }

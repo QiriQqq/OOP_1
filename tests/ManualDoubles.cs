@@ -31,3 +31,15 @@ public sealed class InMemoryEmployeeStorage : IEmployeeStorage
 
     public IReadOnlyList<Employee> GetAll() => _employees.ToArray();
 }
+
+public sealed class FixedPayrollSettings : IPayrollSettings
+{
+    public decimal IncomeTaxRate { get; }
+    public decimal SocialContributionRate { get; }
+
+    public FixedPayrollSettings(decimal incomeTaxRate, decimal socialContributionRate)
+    {
+        IncomeTaxRate = incomeTaxRate;
+        SocialContributionRate = socialContributionRate;
+    }
+}
