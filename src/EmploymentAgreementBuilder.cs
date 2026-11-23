@@ -14,10 +14,6 @@ public sealed class Allowance
     }
 }
 
-/// <summary>
-/// Неизменяемый результат сборки трудового договора.
-/// Коллекция надбавок копируется и закрывается для изменения.
-/// </summary>
 public sealed class EmploymentAgreement
 {
     public int EmployeeId { get; }
@@ -48,9 +44,6 @@ public sealed class EmploymentAgreement
     public decimal TotalAllowances => Allowances.Sum(x => x.Amount);
 }
 
-/// <summary>
-/// Пошаговая сборка договора с проверкой обязательных полей в Build.
-/// </summary>
 public sealed class EmploymentAgreementBuilder
 {
     private Employee? _employee;
@@ -92,7 +85,6 @@ public sealed class EmploymentAgreementBuilder
 
     public EmploymentAgreementBuilder AddAllowance(string name, decimal amount)
     {
-        // Проверка значения откладывается до Build вместе с остальными инвариантами.
         _allowances.Add((name, amount));
         return this;
     }

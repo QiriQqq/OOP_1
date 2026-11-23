@@ -2,7 +2,6 @@ class Program
 {
     static void Main()
     {
-        // Точка сборки: конкретные реализации создаются здесь и передаются клиентам.
         IPayrollSettings payrollSettings = new PayrollSettings(0.13m, 0.03m);
         var payrollCalculator = new PayrollCalculator(payrollSettings);
         IEmployeeFactory employeeFactory = new EmployeeFactory();

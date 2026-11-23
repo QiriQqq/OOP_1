@@ -1,18 +1,9 @@
-/// <summary>
-/// Абстракция настроек удержаний. Клиенты зависят от интерфейса,
-/// а не от глобального экземпляра конкретного класса.
-/// </summary>
 public interface IPayrollSettings
 {
     decimal IncomeTaxRate { get; }
     decimal SocialContributionRate { get; }
 }
 
-/// <summary>
-/// Обычный объект настроек. Он намеренно не является Singleton:
-/// единственный экземпляр при необходимости создаётся в точке сборки приложения.
-/// Ставки задаются долями: 0.13m означает 13 процентов.
-/// </summary>
 public sealed class PayrollSettings : IPayrollSettings
 {
     public decimal IncomeTaxRate { get; }
@@ -44,9 +35,6 @@ public sealed record PayrollCalculation(
     decimal SocialContribution,
     decimal NetPayment);
 
-/// <summary>
-/// Клиентский сервис. Настройки получает извне через конструктор.
-/// </summary>
 public sealed class PayrollCalculator
 {
     private readonly IPayrollSettings _settings;

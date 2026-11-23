@@ -1,8 +1,3 @@
-/// <summary>
-/// Прототип типовой вакансии. Копия независима как объект;
-/// неизменяемые значения (строки, Grade, WorkFormat) безопасно разделяются.
-/// Менять в копии разрешено только должность и оклад.
-/// </summary>
 public sealed class VacancyTemplate
 {
     public string DepartmentName { get; }
@@ -41,7 +36,6 @@ public sealed class VacancyTemplate
 
     public VacancyTemplate Copy()
     {
-        // Поверхностной копии достаточно: все разделяемые ссылочные поля неизменяемы.
         return new VacancyTemplate(DepartmentName, Description, Position,
             Grade, WorkFormat, HoursPerWeek, Salary);
     }

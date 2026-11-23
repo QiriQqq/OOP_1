@@ -6,10 +6,6 @@ public static class EmployeeTypes
     public const string Piecework = "piecework";
 }
 
-/// <summary>
-/// Набор данных для создания сотрудника. Параметры, нужные только одному
-/// виду занятости, необязательны и проверяются соответствующей регистрацией.
-/// </summary>
 public sealed class EmployeeCreationData
 {
     public string FullName { get; }
@@ -62,10 +58,6 @@ public interface IEmployeeFactory
     Employee Create(string employmentType, EmployeeCreationData data);
 }
 
-/// <summary>
-/// Фабрика с реестром. Добавление нового типа не требует изменения Create:
-/// достаточно зарегистрировать новую функцию-создатель.
-/// </summary>
 public sealed class EmployeeFactory : IEmployeeFactory
 {
     private readonly Dictionary<string, Func<EmployeeCreationData, Employee>> _registry =
@@ -85,8 +77,6 @@ public sealed class EmployeeFactory : IEmployeeFactory
 
         Register(EmployeeTypes.Contractor, CreateContractor);
 
-        // Демонстрация расширения из варианта: сдельная оплата добавлена
-        // отдельной регистрацией, без изменения метода Create.
         Register(EmployeeTypes.Piecework, data => new PieceworkEmployee(
             data.FullName, data.Position, data.Grade, data.WorkFormat,
             data.HoursPerWeek, data.HireDate, data.EmploymentType,

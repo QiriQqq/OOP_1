@@ -3,10 +3,6 @@ using System.Diagnostics;
 
 public readonly record struct TaxDetail(string Name, decimal Rate, decimal Amount);
 
-/// <summary>
-/// Расчётный лист, который можно повторно использовать после Reset.
-/// Внутренний список и read-only обёртка создаются один раз на экземпляр.
-/// </summary>
 public sealed class PayrollSlip
 {
     private readonly List<TaxDetail> _taxDetails = new(2);
@@ -55,10 +51,6 @@ public sealed class PayrollSlip
     }
 }
 
-/// <summary>
-/// Простой пул для последовательной выдачи расчётных листов.
-/// Экземпляр можно вернуть только один раз и только после Rent.
-/// </summary>
 public sealed class PayrollSlipPool
 {
     private readonly Stack<PayrollSlip> _available = new();
@@ -112,10 +104,6 @@ public static class PayrollPoolBenchmark
 {
     public const int EmployeesPerRound = 1000;
 
-    /// <summary>
-    /// Сравнивает среднее время одного расчёта на 1000 сотрудников.
-    /// Несколько прогревочных проходов уменьшают влияние JIT-компиляции.
-    /// </summary>
     public static PayrollBenchmarkResult Run(
         IReadOnlyList<Employee> employees,
         IPayrollSettings settings,
@@ -130,7 +118,6 @@ public static class PayrollPoolBenchmark
         if (rounds < 1)
             throw new ArgumentOutOfRangeException(nameof(rounds));
 
-        // JIT-прогрев обоих сценариев не попадает в итоговые измерения.
         MeasureWithoutPool(employees, settings, 2);
         MeasureWithPool(employees, settings, 2);
 
