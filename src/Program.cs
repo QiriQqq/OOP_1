@@ -15,12 +15,12 @@ class Program
         var remote = new WorkFormat("Удалённый", true);
         var hireDate = new DateTime(2022, 4, 1);
 
-        Console.WriteLine("1. Зависимость от настроек налогов через интерфейс");
+        Console.WriteLine("\u001b[32m1. Зависимость от настроек налогов через интерфейс\u001b[0m");
         PayrollCalculation calculation = payrollCalculator.Calculate(60000m);
         Console.WriteLine($"Начислено: {calculation.GrossPayment:0.00}; удержания: " +
             $"{calculation.IncomeTax + calculation.SocialContribution:0.00}; к выплате: {calculation.NetPayment:0.00}");
 
-        Console.WriteLine("\n2. Фабрика сотрудников");
+        Console.WriteLine("\u001b[32m\n2. Фабрика сотрудников\u001b[0m");
         Employee salaried = employeeFactory.Create(EmployeeTypes.Salaried,
             new EmployeeCreationData("Иванов Иван Иванович", engineer, middle, office,
                 40, hireDate, "Окладный", 500, new PercentBonus(5), salary: 60000));
@@ -40,7 +40,7 @@ class Program
             "Тестовый Сотрудник", engineer, junior, office, 40, hireDate,
             "Неизвестный", 500, new NoBonus())), "неизвестный тип занятости");
 
-        Console.WriteLine("\n3. Строитель трудового договора");
+        Console.WriteLine("\u001b[32m\n3. Строитель трудового договора\u001b[0m");
         EmploymentAgreement agreement = new EmploymentAgreementBuilder()
             .ForEmployee(salaried)
             .ForPosition(engineer)
@@ -57,7 +57,7 @@ class Program
             .ForEmployee(salaried).ForPosition(engineer).WithWorkSchedule("5/2")
             .WithProbationPeriod(3).Build(), "сборка договора без оклада");
 
-        Console.WriteLine("\n4. Прототип вакансии");
+        Console.WriteLine("\u001b[32m\n4. Прототип вакансии\u001b[0m");
         var vacancyPrototype = new VacancyTemplate("Разработка", "Разработка внутренних сервисов",
             engineer, middle, remote, 40, 65000);
         VacancyTemplate vacancyCopy = vacancyPrototype.Copy();
@@ -66,7 +66,7 @@ class Program
         Console.WriteLine($"Образец: {vacancyPrototype.Position}, {vacancyPrototype.Salary:0.00}");
         Console.WriteLine($"Копия:   {vacancyCopy.Position}, {vacancyCopy.Salary:0.00}");
 
-        Console.WriteLine("\n5. Пул и измерение для 1000 сотрудников");
+        Console.WriteLine("\u001b[32m\n5. Пул и измерение для 1000 сотрудников\u001b[0m");
         var employeesForBenchmark = new List<Employee>(PayrollPoolBenchmark.EmployeesPerRound);
         for (int i = 0; i < PayrollPoolBenchmark.EmployeesPerRound; i++)
         {
@@ -83,7 +83,7 @@ class Program
             ? "Вывод: в этом запуске пул дал преимущество не менее 5%; повторите замер несколько раз."
             : "Вывод: преимущество пула не достигло 5%; для такой нагрузки усложнение может быть не оправдано.");
 
-        Console.WriteLine("\nДемонстрация очистки объекта в пуле");
+        Console.WriteLine("\u001b[32m\nДемонстрация очистки объекта в пуле\u001b[0m");
         var pool = new PayrollSlipPool();
         PayrollSlip slip = pool.Rent();
         slip.Calculate(salaried, payrollSettings);
