@@ -3,11 +3,11 @@ using Xunit;
 
 public class PayrollSettingsTests
 {
+    // тест, который стал возможен, ибо терь можно просто передать другие 
+    // ("фейковые") значения, а не редактировать глобальный статик объект
     [Fact]
     public void Calculator_uses_injected_fake_settings()
     {
-        // До отказа от Singleton тест не мог безопасно подставить отдельные ставки:
-        // клиент самостоятельно обращался бы к глобальному статическому объекту.
         IPayrollSettings fake = new FixedPayrollSettings(0.10m, 0.05m);
         var calculator = new PayrollCalculator(fake);
 
