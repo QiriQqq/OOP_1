@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 public readonly record struct TaxDetail(string Name, decimal Rate, decimal Amount);
 
+// рассчётный лист одного сотрудника
 public sealed class PayrollSlip
 {
     private readonly List<TaxDetail> _taxDetails = new(2);
@@ -51,6 +52,7 @@ public sealed class PayrollSlip
     }
 }
 
+// склад листов
 public sealed class PayrollSlipPool
 {
     private readonly Stack<PayrollSlip> _available = new();
@@ -100,6 +102,7 @@ public sealed record PayrollBenchmarkResult(
     public bool PoolIsWorthwhile => PoolSavingsPercent >= 5.0;
 }
 
+// бенчмарк (есть ли ваще смысл в использовании пула)
 public static class PayrollPoolBenchmark
 {
     public const int EmployeesPerRound = 1000;

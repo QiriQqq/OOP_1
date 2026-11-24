@@ -49,6 +49,7 @@ public sealed class EmployeeCreationData
         Salary = salary;
         RatePerUnit = ratePerUnit;
         UnitsProduced = unitsProduced;
+        // суммы актов выполненных работ с проверкой на null
         ActAmounts = Array.AsReadOnly((actAmounts ?? Array.Empty<double>()).ToArray());
     }
 }

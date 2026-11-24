@@ -8,7 +8,9 @@ public sealed class PayrollSettings : IPayrollSettings
 {
     public decimal IncomeTaxRate { get; }
     public decimal SocialContributionRate { get; }
-
+    
+    // конструктор публичный, т.к. терь единственность - это свойство
+    // программы, а не св-во этого класса
     public PayrollSettings(decimal incomeTaxRate, decimal socialContributionRate)
     {
         ValidateRate(incomeTaxRate, nameof(incomeTaxRate));
@@ -29,6 +31,7 @@ public sealed class PayrollSettings : IPayrollSettings
     }
 }
 
+// record - неизменяемый класс-значение
 public sealed record PayrollCalculation(
     decimal GrossPayment,
     decimal IncomeTax,
@@ -53,6 +56,7 @@ public sealed class PayrollCalculator
         decimal socialContribution = grossPayment * _settings.SocialContributionRate;
         decimal netPayment = grossPayment - incomeTax - socialContribution;
 
+        // результат записывается в PayrollCalculation
         return new PayrollCalculation(grossPayment, incomeTax, socialContribution, netPayment);
     }
 }
